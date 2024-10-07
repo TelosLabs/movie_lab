@@ -1,5 +1,6 @@
-movie_attrs = 1_000.times do
-  {
+movie_attrs = []
+1_000.times do
+  movie_attrs << {
     title: Faker::Movie.title,
     description: Faker::Movie.quote
   }

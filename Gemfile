@@ -7,12 +7,15 @@ gem "sprockets-rails"
 gem "puma"
 gem "pg"
 gem "importmap-rails"
+gem "meilisearch-rails"
 gem "turbo-rails"
+gem "tailwindcss-rails"
 gem "stimulus-rails"
 gem "tzinfo-data", platforms: %i[windows jruby]
 gem "bootsnap", require: false
 
 group :development, :test do
+  gem "pry-byebug"
   gem "debug", platforms: %i[mri windows]
 end
 
