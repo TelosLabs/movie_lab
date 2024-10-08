@@ -15,10 +15,11 @@ ActiveRecord::Schema[8.0].define(version: 2024_10_07_210532) do
   enable_extension "pg_catalog.plpgsql"
 
   create_table "movies", force: :cascade do |t|
+    t.bigint "tmdb_id", null: false
     t.string "title", null: false
     t.string "poster_url"
     t.text "overview"
-    t.bigint "tmdb_id", null: false
+    t.jsonb "embedding", default: [], null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["tmdb_id"], name: "index_movies_on_tmdb_id", unique: true

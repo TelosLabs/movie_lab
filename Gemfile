@@ -12,6 +12,7 @@ gem "themoviedb-api"
 gem "turbo-rails"
 gem "tailwindcss-rails"
 gem "stimulus-rails"
+gem "ruby-openai"
 gem "tzinfo-data", platforms: %i[windows jruby]
 gem "bootsnap", require: false
 
