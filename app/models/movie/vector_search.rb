@@ -2,17 +2,33 @@ module Movie::VectorSearch
   extend ActiveSupport::Concern
 
   class_methods do
+    def vector_search_sql(embedding, limit)
+      <<~SQL
+        SELECT rowid, distance
+        FROM vec_movies
+        WHERE embedding MATCH '#{embedding}'
+        ORDER BY distance
+        LIMIT #{limit};
+      SQL
+    end
+
+    def vector_search_order_sql(ids)
+      order_clause = ids
+        .each_with_index
+        .map { |id, index| "WHEN #{id} THEN #{index}" }
+        .join(" ")
+      Arel.sql("CASE id #{order_clause} END")
+    end
+
     def vector_search(input:, limit: 8)
       input_embedding = Embedding.create(input)
-      response = ActiveRecord::Base.connection.execute(
-        "SELECT rowid, distance
-        FROM vec_movies
-        WHERE embedding MATCH '#{input_embedding}'
-        ORDER BY distance
-        LIMIT #{limit};"
-      )
+      sql = vector_search_sql(input_embedding, limit)
+      response = ActiveRecord::Base.connection.execute(sql)
       ids = response.map { |row| row["rowid"] }
+
       where(id: ids)
+        .order(Movie.vector_search_order_sql(ids))
+        .limit(limit)
     end
   end
 
@@ -28,23 +44,14 @@ module Movie::VectorSearch
   end
 
   def similar(n = 8)
-    response = ActiveRecord::Base.connection.execute(
-      "SELECT rowid, distance
-      FROM vec_movies
-      WHERE embedding MATCH '#{unpacked_embedding}'
-      ORDER BY distance
-      LIMIT #{n + 1};"
-    )
-
+    sql = Movie.vector_search_sql(unpacked_embedding, n + 1)
+    response = ActiveRecord::Base.connection.execute(sql)
     ids = response.map { |row| row["rowid"] }
-    order_clause = ids
-      .each_with_index
-      .map { |id, index| "WHEN #{id} THEN #{index}" }
-      .join(" ")
+
     Movie
       .where(id: ids)
       .where.not(id: id)
-      .order(Arel.sql("CASE id #{order_clause} END"))
+      .order(Movie.vector_search_order_sql(ids))
       .limit(n)
   end
 end

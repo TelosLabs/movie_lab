@@ -17,4 +17,4 @@ Training app to test new stuff and experiment with new features
 
 ### Usage
 #### Vector search
-- You need to add your OpenAI API key to your environment variables to use the vector search feature (`ENV['OPENAI_API_KEY']`)
+- You need to add your OpenAI API key to your environment variables to use the vector search feature (`ENV['OPENAI_ACCESS_TOKEN']`).
