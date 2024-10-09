@@ -2,8 +2,8 @@ list_searches = [
   proc { Tmdb::Movie.popular },
   proc { Tmdb::Movie.top_rated }
 ]
+movie_attrs = []
 list_searches.each do |search|
-  movie_attrs = []
   search.call.results.each do |movie|
     movie_attrs << {
       tmdb_id: movie.id,
@@ -12,10 +12,8 @@ list_searches.each do |search|
       poster_url: movie.poster_path
     }
   end
-
-  movie_attrs.uniq! { |movie| movie[:tmdb_id] }
-  Movie.insert_all(movie_attrs)
 end
+Movie.insert_all(movie_attrs, unique_by: :tmdb_id)
 
 movie_attrs = []
 genres = Tmdb::Genre.movie_list
@@ -33,6 +31,9 @@ genres.each do |genre|
   end
 end
 movie_attrs.uniq! { |movie| movie[:tmdb_id] }
-Movie.insert_all(movie_attrs)
+Movie.insert_all(movie_attrs, unique_by: :tmdb_id)
 
-Movie.reindex!
+Movie.all.find_each do |movie|
+  movie.generate_and_save_embedding
+  movie.find_or_create_vec_movie
+end

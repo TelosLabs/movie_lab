@@ -21,6 +21,7 @@ cli_arg_version	bin/bundle	/^  def cli_arg_version$/;"	f
 env_var_version	bin/bundle	/^  def env_var_version$/;"	f
 full_poster_path	app/models/movie.rb	/^  def full_poster_path$/;"	f	class:Movie
 gemfile	bin/bundle	/^  def gemfile$/;"	f
+generate_and_save_embedding	app/models/movie.rb	/^  def generate_and_save_embedding$/;"	f	class:Movie
 index	app/controllers/movies_controller.rb	/^  def index$/;"	f	class:MoviesController
 invoked_as_script?	bin/bundle	/^  def invoked_as_script?$/;"	f
 load_bundler!	bin/bundle	/^  def load_bundler!$/;"	f

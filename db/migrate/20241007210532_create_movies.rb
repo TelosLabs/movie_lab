@@ -5,7 +5,7 @@ class CreateMovies < ActiveRecord::Migration[8.0]
       t.string :title, null: false
       t.string :poster_url
       t.text :overview
-      t.jsonb :embedding, null: false, default: []
+      t.blob :embedding
       t.timestamps
 
       t.index :tmdb_id, unique: true
