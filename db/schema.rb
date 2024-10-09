@@ -28,5 +28,6 @@ ActiveRecord::Schema[8.0].define(version: 2024_10_08_192553) do
 
   # Virtual tables defined in this database.
   # Note that virtual tables may not work with other database engines. Be careful if changing database.
+  create_virtual_table "fts_movies", "fts5", ["title,overview"]
   create_virtual_table "vec_movies", "vec0", ["embedding float[1536]"]
 end

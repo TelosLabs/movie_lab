@@ -24,11 +24,13 @@ gem "tzinfo-data", platforms: %i[windows jruby]
 gem "bootsnap", require: false
 
 group :development, :test do
+  gem "dotenv"
   gem "pry-byebug"
   gem "debug", platforms: %i[mri windows]
 end
 
 group :development do
+  gem "annotate"
   gem "web-console"
   gem "rack-mini-profiler"
   gem "error_highlight", ">= 0.4.0", platforms: [:ruby]

@@ -1,16 +1,23 @@
+# == Schema Information
+#
+# Table name: movies
+#
+#  id         :integer          not null, primary key
+#  embedding  :binary
+#  overview   :text
+#  poster_url :string
+#  title      :string           not null
+#  created_at :datetime         not null
+#  updated_at :datetime         not null
+#  tmdb_id    :bigint           not null
+#
+# Indexes
+#
+#  index_movies_on_tmdb_id  (tmdb_id) UNIQUE
+#
 class Movie < ApplicationRecord
-  def self.vector_search(input:, limit: 8)
-    input_embedding = Embedding.create(input)
-    response = ActiveRecord::Base.connection.execute(
-      "SELECT rowid, distance
-      FROM vec_movies
-      WHERE embedding match '#{input_embedding}'
-      ORDER BY distance
-      LIMIT #{limit};"
-    )
-    # TODO order
-    where(id: response.map { |r| r["rowid"] })
-  end
+  include FullTextSearch
+  include VectorSearch
 
   def unpacked_embedding = embedding.unpack("f*")
 
@@ -23,29 +30,5 @@ class Movie < ApplicationRecord
 
     self.embedding = Embedding.create(overview).pack("f*")
     save!
-  end
-
-  def find_or_create_vec_movie
-    vec_movie = ActiveRecord::Base.connection.execute(
-      "SELECT * FROM vec_movies WHERE rowid = #{id}"
-    ).first
-    return if vec_movie.present?
-
-    ActiveRecord::Base.connection.execute(
-      "INSERT INTO vec_movies (rowid, embedding) VALUES (#{id}, '#{unpacked_embedding}')"
-    )
-  end
-
-  def similar(n = 8)
-    response = ActiveRecord::Base.connection.execute(
-      "SELECT rowid, distance
-      FROM vec_movies
-      WHERE embedding match '#{unpacked_embedding}'
-      ORDER BY distance
-      LIMIT #{n + 1};"
-    )
-    Movie
-      .where(id: response.map { |r| r["rowid"] })
-      .where.not(id: id)
   end
 end
