@@ -143,6 +143,8 @@ GEM
     minitest (5.25.1)
     msgpack (1.7.3)
     multipart-post (2.4.1)
+    neighbor (0.5.0)
+      activerecord (>= 7)
     net-http (0.4.1)
       uri
     net-imap (0.4.16)
@@ -285,6 +287,7 @@ DEPENDENCIES
   dotenv
   error_highlight (>= 0.4.0)
   importmap-rails
+  neighbor
   propshaft
   pry-byebug
   puma
