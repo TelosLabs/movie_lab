@@ -6,7 +6,6 @@ gem "rails", "8.0.0.beta1"
 
 # Database
 gem "sqlite3"
-gem "sqlite-vec", platform: :ruby_33
 gem "activerecord-enhancedsqlite3-adapter"
 
 # Frontend
@@ -15,6 +14,10 @@ gem "importmap-rails"
 gem "turbo-rails"
 gem "tailwindcss-rails"
 gem "stimulus-rails"
+
+# Vector search
+gem "sqlite-vec", platform: :ruby_33
+gem "neighbor"
 
 # Other
 gem "puma"

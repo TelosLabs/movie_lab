@@ -2,7 +2,8 @@ class MoviesController < ApplicationController
   def index
     @movies =
       if params[:search_type] == "vector" && params[:search].present?
-        Movie.vector_search(input: params[:search], limit: 40)
+        embedding = Embedding.create(params[:search])
+        Movie.vector_search(embedding: embedding, limit: 40)
       elsif params[:search].present?
         Movie.full_text_search(input: params[:search], limit: 40)
       else

@@ -29,11 +29,9 @@ genres.each do |genre|
     end
   end
 end
-movie_attrs.uniq! { |movie| movie[:tmdb_id] }
 Movie.insert_all(movie_attrs, unique_by: :tmdb_id)
 
-Movie.all.find_each do |movie|
-  movie.generate_and_save_embedding
-  movie.find_or_create_fts5_movie
-  movie.find_or_create_vec_movie
+Movie.find_each do |movie|
+  movie.find_or_create_movie_fts
+  movie.find_or_create_movie_vector
 end
