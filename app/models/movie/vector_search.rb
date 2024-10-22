@@ -7,9 +7,9 @@ module Movie::VectorSearch
 
   class_methods do
     def vector_search(embedding:, limit: 10)
-      where("movie_vectors.embedding MATCH ? AND k = ?", embedding.to_s, limit)
+      where("embedding MATCH ? AND k = ?", embedding.to_s, limit)
         .joins(:movie_vector)
-        .order("movie_vectors.distance")
+        .order(:distance)
         .distinct
     end
   end

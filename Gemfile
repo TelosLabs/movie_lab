@@ -8,6 +8,17 @@ gem "rails", "8.0.0.beta1"
 gem "sqlite3"
 gem "activerecord-enhancedsqlite3-adapter"
 
+# Vector search
+gem "sqlite-vec", platform: :ruby_33
+gem "neighbor"
+
+# Server
+gem "puma"
+
+# APIs
+gem "themoviedb-api"
+gem "ruby-openai"
+
 # Frontend
 gem "propshaft"
 gem "importmap-rails"
@@ -20,9 +31,6 @@ gem "sqlite-vec", platform: :ruby_33
 gem "neighbor"
 
 # Other
-gem "puma"
-gem "themoviedb-api"
-gem "ruby-openai"
 gem "tzinfo-data", platforms: %i[windows jruby]
 gem "bootsnap", require: false
 

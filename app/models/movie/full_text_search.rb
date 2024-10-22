@@ -10,6 +10,7 @@ module Movie::FullTextSearch
       where("movie_fts MATCH ?", input)
         .joins(:movie_fts)
         .limit(limit)
+        .order("bm25(movie_fts)")
         .distinct
     end
   end
